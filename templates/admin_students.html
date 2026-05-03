@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Students — Admin{% endblock %}
+{% block page_title %}Students{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>All Students</h1>
+    <p>View all registered students and their enrollments</p>
+  </div>
+  <a href="{{ url_for('admin_add_user') }}" class="btn btn-red">+ Add Student</a>
+</div>
+
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>{{ students | length }} Students</h3>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Enrolled Courses</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in students %}
+      <tr>
+        <td style="color:var(--subtext);">#{{ s['student_id'] }}</td>
+        <td><strong>{{ s['name'] }}</strong></td>
+        <td>{{ s['email'] }}</td>
+        <td>{{ s['department'] or '—' }}</td>
+        <td>
+          <span class="badge badge-teal">{{ s['enrolled'] }} courses</span>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5">
+          <div class="empty-state">
+            <div class="empty-icon">🎓</div>
+            <h3>No students yet</h3>
+            <p><a href="{{ url_for('admin_add_user') }}" style="color:var(--red);">Add the first student</a></p>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

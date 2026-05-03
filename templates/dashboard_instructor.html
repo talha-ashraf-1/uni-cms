@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Instructor Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="welcome-banner">
+  <h2>Welcome, {{ session.name }}! 👋</h2>
+  <p>Manage your courses and grade your students.</p>
+</div>
+
+<div class="cards-grid">
+  <div class="stat-card" style="--accent: var(--teal);">
+    <div class="stat-icon">📚</div>
+    <div class="stat-label">My Courses</div>
+    <div class="stat-value">{{ stats.my_courses }}</div>
+    <div class="stat-sub">Courses teaching</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--red);">
+    <div class="stat-icon">🎓</div>
+    <div class="stat-label">My Students</div>
+    <div class="stat-value">{{ stats.my_students }}</div>
+    <div class="stat-sub">Enrolled students</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--warning);">
+    <div class="stat-icon">⏳</div>
+    <div class="stat-label">Pending Grades</div>
+    <div class="stat-value">{{ stats.pending_grades }}</div>
+    <div class="stat-sub">Awaiting evaluation</div>
+  </div>
+</div>
+
+<!-- My Courses table -->
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>My Courses</h3>
+    <a href="{{ url_for('instructor_courses') }}" class="btn btn-outline btn-sm">View All</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Course Name</th>
+        <th>Department</th>
+        <th>Credits</th>
+        <th>Enrolled</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in my_courses %}
+      <tr>
+        <td style="color:var(--subtext); font-size:12px;">#{{ c['course_id'] }}</td>
+        <td><strong>{{ c['course_name'] }}</strong></td>
+        <td>{{ c['department'] or '—' }}</td>
+        <td><span class="badge badge-teal">{{ c['credits'] }} CR</span></td>
+        <td>{{ c['enrolled'] }} students</td>
+        <td>
+          <a href="{{ url_for('instructor_course_students', cid=c['course_id']) }}"
+             class="btn btn-teal btn-sm">View Students</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h3>No courses assigned</h3>
+        <p>Contact admin to assign courses.</p>
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

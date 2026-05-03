@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Courses — Admin{% endblock %}
+{% block page_title %}Course Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>All Courses</h1>
+    <p>Manage university courses and assignments</p>
+  </div>
+  <a href="{{ url_for('admin_add_course') }}" class="btn btn-red">+ Add Course</a>
+</div>
+
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>{{ courses | length }} Courses</h3>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Course Name</th>
+        <th>Department</th>
+        <th>Credits</th>
+        <th>Instructor</th>
+        <th>Enrolled</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in courses %}
+      <tr>
+        <td style="color:var(--subtext);">#{{ c['course_id'] }}</td>
+        <td><strong>{{ c['course_name'] }}</strong></td>
+        <td>{{ c['department'] or '—' }}</td>
+        <td><span class="badge badge-teal">{{ c['credits'] }} CR</span></td>
+        <td>{{ c['instructor_name'] or '<span style="color:var(--subtext);">Unassigned</span>' }}</td>
+        <td>{{ c['enrolled'] }} students</td>
+        <td>
+          <form method="POST" action="{{ url_for('admin_delete_course', cid=c['course_id']) }}"
+                onsubmit="return confirm('Delete course {{ c['course_name'] }}? All enrollments will also be deleted.');">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7">
+          <div class="empty-state">
+            <div class="empty-icon">📚</div>
+            <h3>No courses yet</h3>
+            <p><a href="{{ url_for('admin_add_course') }}" style="color:var(--red);">Add the first course</a></p>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

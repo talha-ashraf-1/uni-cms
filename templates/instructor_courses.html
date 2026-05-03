@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}My Courses — Instructor{% endblock %}
+{% block page_title %}My Courses{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>My Courses</h1>
+    <p>Courses assigned to you this semester</p>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>{{ courses | length }} Assigned Courses</h3>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Course Name</th>
+        <th>Department</th>
+        <th>Credits</th>
+        <th>Students Enrolled</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in courses %}
+      <tr>
+        <td style="color:var(--subtext);">#{{ c['course_id'] }}</td>
+        <td><strong>{{ c['course_name'] }}</strong></td>
+        <td>{{ c['department'] or '—' }}</td>
+        <td><span class="badge badge-teal">{{ c['credits'] }} CR</span></td>
+        <td>
+          <span class="badge badge-{{ 'red' if c['enrolled'] == 0 else 'green' }}">
+            {{ c['enrolled'] }} students
+          </span>
+        </td>
+        <td>
+          <a href="{{ url_for('instructor_course_students', cid=c['course_id']) }}"
+             class="btn btn-teal btn-sm">Manage Students</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6">
+          <div class="empty-state">
+            <div class="empty-icon">📚</div>
+            <h3>No courses assigned</h3>
+            <p>Contact the administrator to assign courses to you.</p>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

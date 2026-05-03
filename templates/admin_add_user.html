@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Add User — Admin{% endblock %}
+{% block page_title %}Add New User{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Add New User</h1>
+    <p>Create a student, instructor, or admin account</p>
+  </div>
+  <a href="{{ url_for('admin_users') }}" class="btn btn-outline">← Back</a>
+</div>
+
+<div class="form-card">
+  <form method="POST" action="{{ url_for('admin_add_user') }}">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" name="name" placeholder="John Doe" required>
+      </div>
+      <div class="form-group">
+        <label>Username *</label>
+        <input type="text" name="username" placeholder="john_doe" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Email Address *</label>
+        <input type="email" name="email" placeholder="john@university.edu" required>
+      </div>
+      <div class="form-group">
+        <label>Password *</label>
+        <input type="password" name="password" placeholder="••••••••" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Role *</label>
+        <select name="role" required>
+          <option value="student">Student</option>
+          <option value="instructor">Instructor</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Department</label>
+        <input type="text" name="department" placeholder="e.g. Computer Science">
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:8px;">
+      <button type="submit" class="btn btn-red">Add User</button>
+      <a href="{{ url_for('admin_users') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

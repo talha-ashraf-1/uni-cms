@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}My Profile — Student{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>My Profile</h1>
+    <p>Your student information</p>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns: 280px 1fr; gap:20px;">
+
+  <!-- Avatar card -->
+  <div class="form-card" style="text-align:center; padding:32px 20px;">
+    <div style="width:80px; height:80px; border-radius:50%;
+                background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+                display:flex; align-items:center; justify-content:center;
+                font-family:'Sora',sans-serif; font-weight:700; font-size:28px;
+                color:white; margin:0 auto 16px;">
+      {{ student['name'][0] | upper if student else '?' }}
+    </div>
+    <h2 style="font-family:'Sora',sans-serif; font-size:18px; font-weight:700; color:var(--text);">
+      {{ student['name'] if student else '—' }}
+    </h2>
+    <p style="color:var(--subtext); font-size:13px; margin-top:4px;">
+      {{ student['department'] or 'No department' }}
+    </p>
+    <div style="margin-top:16px;">
+      <span class="badge badge-student" style="font-size:12px; padding:5px 16px;">Student</span>
+    </div>
+  </div>
+
+  <!-- Info card -->
+  <div class="form-card">
+    <h3 style="font-family:'Sora',sans-serif; font-size:16px; font-weight:700;
+               color:var(--text); margin-bottom:4px;">Account Information</h3>
+    <div style="width:40px; height:3px; background:var(--red);
+                border-radius:2px; margin-bottom:24px;"></div>
+
+    {% if student %}
+    <div style="display:grid; gap:20px;">
+      <div style="display:grid; grid-template-columns:140px 1fr; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--border);">
+        <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--subtext);">Student ID</span>
+        <span style="font-size:14px; color:var(--text); font-weight:600;">#{{ student['student_id'] }}</span>
+      </div>
+      <div style="display:grid; grid-template-columns:140px 1fr; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--border);">
+        <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--subtext);">Full Name</span>
+        <span style="font-size:14px; color:var(--text);">{{ student['name'] }}</span>
+      </div>
+      <div style="display:grid; grid-template-columns:140px 1fr; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--border);">
+        <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--subtext);">Email</span>
+        <span style="font-size:14px; color:var(--text);">{{ student['email'] }}</span>
+      </div>
+      <div style="display:grid; grid-template-columns:140px 1fr; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--border);">
+        <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--subtext);">Department</span>
+        <span style="font-size:14px; color:var(--text);">{{ student['department'] or '—' }}</span>
+      </div>
+      <div style="display:grid; grid-template-columns:140px 1fr; align-items:center;">
+        <span style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--subtext);">Role</span>
+        <span class="badge badge-student">Student</span>
+      </div>
+    </div>
+    {% else %}
+    <p style="color:var(--subtext);">Profile not found. Please contact admin.</p>
+    {% endif %}
+
+    <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--border);">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-teal">← Back to Dashboard</a>
+      <a href="{{ url_for('student_grades') }}" class="btn btn-outline" style="margin-left:10px;">View Grades</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

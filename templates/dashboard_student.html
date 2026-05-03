@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="welcome-banner">
+  <h2>Welcome, {{ session.name }}! 🎓</h2>
+  <p>Track your courses, grades, and academic progress.</p>
+</div>
+
+<div class="cards-grid">
+  <div class="stat-card" style="--accent: var(--red);">
+    <div class="stat-icon">📚</div>
+    <div class="stat-label">Enrolled Courses</div>
+    <div class="stat-value">{{ stats.enrolled }}</div>
+    <div class="stat-sub">Total enrollments</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--success);">
+    <div class="stat-icon">✓</div>
+    <div class="stat-label">Graded</div>
+    <div class="stat-value">{{ stats.completed }}</div>
+    <div class="stat-sub">Courses with grades</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--teal);">
+    <div class="stat-icon">📊</div>
+    <div class="stat-label">Current GPA</div>
+    <div class="stat-value" style="font-size:28px;">{{ gpa if gpa is not none else '—' }}</div>
+    <div class="stat-sub">Out of 4.0</div>
+  </div>
+</div>
+
+<!-- Quick actions -->
+<div style="display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap;">
+  <a href="{{ url_for('student_courses') }}" class="btn btn-red">+ Register Course</a>
+  <a href="{{ url_for('student_grades') }}" class="btn btn-teal">📊 View Grades</a>
+  <a href="{{ url_for('student_profile') }}" class="btn btn-outline">👤 My Profile</a>
+</div>
+
+<!-- Enrolled courses -->
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>My Enrollments</h3>
+    <a href="{{ url_for('student_grades') }}" class="btn btn-outline btn-sm">Full Grades</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Instructor</th>
+        <th>Credits</th>
+        <th>Semester</th>
+        <th>Grade</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in enrollments %}
+      <tr>
+        <td>
+          <strong>{{ e['course_name'] }}</strong>
+          <div style="font-size:11px; color:var(--subtext);">{{ e['department'] or '' }}</div>
+        </td>
+        <td>{{ e['instructor_name'] or '—' }}</td>
+        <td><span class="badge badge-teal">{{ e['credits'] }} CR</span></td>
+        <td>{{ e['semester'] }}</td>
+        <td>
+          {% if e['grade'] is not none %}
+            {% set g = e['grade'] %}
+            <span class="grade-pill {{ 'grade-A' if g >= 3.5 else 'grade-B' if g >= 3.0 else 'grade-C' if g >= 2.0 else 'grade-D' if g >= 1.0 else 'grade-F' }}">
+              {{ g }}
+            </span>
+          {% else %}
+            <span class="grade-pill grade-pending">Pending</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if e['grade'] is none %}
+          <form method="POST" action="{{ url_for('student_drop', eid=e['enrollment_id']) }}"
+                onsubmit="return confirm('Drop this course?');">
+            <button type="submit" class="btn btn-danger btn-sm">Drop</button>
+          </form>
+          {% else %}
+            <span style="color:var(--subtext); font-size:12px;">Completed</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6">
+        <div class="empty-state">
+          <div class="empty-icon">📚</div>
+          <h3>No enrollments yet</h3>
+          <p><a href="{{ url_for('student_courses') }}" style="color:var(--red);">Browse and register courses</a></p>
+        </div>
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,598 @@
+/* ============================================================
+   University CMS — Theme matching IT Issue Management System
+   Primary Red: #9E1124  |  Teal: #144F4D
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --red:        #9E1124;
+  --red-dark:   #7a0d1c;
+  --red-light:  #c41530;
+  --teal:       #144F4D;
+  --teal-dark:  #0d3533;
+  --teal-light: #1a6663;
+  --bg:         #F4F6F9;
+  --card:       #ffffff;
+  --text:       #1A1A2E;
+  --subtext:    #6C757D;
+  --border:     #E2E8F0;
+  --success:    #10B981;
+  --warning:    #F59E0B;
+  --danger:     #EF4444;
+  --sidebar-w:  230px;
+  --header-h:   62px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+/* ── Layout ───────────────────────────────────────────────── */
+
+.layout { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+
+.sidebar {
+  width: var(--sidebar-w);
+  background: linear-gradient(180deg, var(--teal) 0%, var(--teal-dark) 100%);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  z-index: 100;
+  box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 18px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo-shield {
+  width: 36px; height: 36px;
+  background: var(--red);
+  clip-path: polygon(50% 0%, 100% 15%, 100% 60%, 50% 100%, 0% 60%, 0% 15%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700; font-size: 11px;
+  color: white; flex-shrink: 0;
+}
+
+.logo-text { line-height: 1.2; }
+.logo-text strong {
+  display: block;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: white; letter-spacing: 0.3px;
+}
+.logo-text span {
+  font-size: 9px; color: rgba(255,255,255,0.55);
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+
+/* User info in sidebar */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.user-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700; font-size: 13px;
+  color: white; flex-shrink: 0;
+}
+
+.user-info strong { display: block; font-size: 13px; color: white; font-weight: 600; }
+.user-info span   { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: capitalize; }
+
+/* Nav */
+.sidebar-nav { flex: 1; padding: 10px 0; overflow-y: auto; }
+
+.nav-section-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  padding: 12px 18px 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border-radius: 0;
+  position: relative;
+  margin: 1px 8px;
+  border-radius: 8px;
+}
+
+.nav-item:hover {
+  color: white;
+  background: rgba(255,255,255,0.1);
+}
+
+.nav-item.active {
+  background: var(--red);
+  color: white;
+  font-weight: 600;
+}
+
+.nav-item .icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+
+.sidebar-footer {
+  padding: 12px 8px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── Main Content ─────────────────────────────────────────── */
+
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Top Header ───────────────────────────────────────────── */
+
+.topbar {
+  height: var(--header-h);
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topbar-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.badge-role {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-role.admin      { background: rgba(158,17,36,0.12); color: var(--red); }
+.badge-role.instructor { background: rgba(20,79,77,0.12);  color: var(--teal); }
+.badge-role.student    { background: rgba(16,185,129,0.12); color: var(--success); }
+
+/* ── Page Body ────────────────────────────────────────────── */
+
+.page-body { padding: 28px; flex: 1; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.page-header p { color: var(--subtext); font-size: 13px; margin-top: 2px; }
+
+/* ── Cards ────────────────────────────────────────────────── */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px 22px 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent, var(--red));
+  border-radius: 0 0 14px 14px;
+}
+
+.stat-label { font-size: 12px; font-weight: 600; color: var(--accent, var(--red)); margin-bottom: 8px; }
+.stat-value { font-family: 'Sora', sans-serif; font-size: 36px; font-weight: 700; color: var(--text); line-height: 1; }
+.stat-sub   { font-size: 12px; color: var(--subtext); margin-top: 6px; }
+.stat-icon  { position: absolute; top: 18px; right: 18px; font-size: 26px; opacity: 0.18; }
+
+/* ── Tables ───────────────────────────────────────────────── */
+
+.table-card {
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table-card-header h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--subtext);
+  background: #f8f9fa;
+  border-bottom: 1px solid var(--border);
+}
+tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #fafbfc; }
+
+/* ── Badges ───────────────────────────────────────────────── */
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.badge-red      { background: rgba(158,17,36,0.12); color: var(--red); }
+.badge-teal     { background: rgba(20,79,77,0.12);  color: var(--teal); }
+.badge-green    { background: rgba(16,185,129,0.12); color: var(--success); }
+.badge-yellow   { background: rgba(245,158,11,0.12); color: var(--warning); }
+.badge-gray     { background: rgba(108,117,125,0.12); color: var(--subtext); }
+.badge-admin    { background: rgba(158,17,36,0.12); color: var(--red); }
+.badge-student  { background: rgba(16,185,129,0.12); color: var(--success); }
+.badge-instructor { background: rgba(20,79,77,0.12); color: var(--teal); }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-red   { background: var(--red);   color: white; }
+.btn-red:hover { background: var(--red-dark); }
+
+.btn-teal  { background: var(--teal);  color: white; }
+.btn-teal:hover { background: var(--teal-dark); }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text);
+}
+.btn-outline:hover { border-color: var(--red); color: var(--red); }
+
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { background: #dc2626; }
+
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+
+/* ── Forms ────────────────────────────────────────────────── */
+
+.form-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  max-width: 640px;
+}
+
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  background: white;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(158,17,36,0.08);
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ── Alerts / Flash ───────────────────────────────────────── */
+
+.alerts { padding: 0 28px; margin-top: 12px; }
+
+.alert {
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.alert-success { background: rgba(16,185,129,0.12); color: #065f46; border: 1px solid rgba(16,185,129,0.3); }
+.alert-error   { background: rgba(239,68,68,0.1);   color: #991b1b; border: 1px solid rgba(239,68,68,0.3); }
+
+/* ── Welcome banner ───────────────────────────────────────── */
+
+.welcome-banner {
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.welcome-banner::before {
+  content: '';
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+.welcome-banner::after {
+  content: '';
+  position: absolute;
+  right: 60px; bottom: -60px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.welcome-banner h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+.welcome-banner p { color: rgba(255,255,255,0.7); font-size: 13px; }
+
+/* ── Grade pill ───────────────────────────────────────────── */
+
+.grade-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+}
+.grade-A { background: rgba(16,185,129,0.15); color: #065f46; }
+.grade-B { background: rgba(20,79,77,0.15);   color: var(--teal); }
+.grade-C { background: rgba(245,158,11,0.15); color: #92400e; }
+.grade-D { background: rgba(239,68,68,0.12);  color: #991b1b; }
+.grade-F { background: rgba(239,68,68,0.2);   color: #7f1d1d; }
+.grade-pending { background: var(--bg); color: var(--subtext); font-weight: 500; }
+
+/* ── GPA Card ─────────────────────────────────────────────── */
+
+.gpa-display {
+  text-align: center;
+  padding: 20px;
+}
+.gpa-number {
+  font-family: 'Sora', sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--teal);
+  line-height: 1;
+}
+.gpa-label { font-size: 12px; color: var(--subtext); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ── Login Page ───────────────────────────────────────────── */
+
+.login-layout {
+  min-height: 100vh;
+  display: flex;
+}
+
+.login-left {
+  width: 420px;
+  background: linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -80px; left: -80px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+.login-left::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; right: -60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+
+.login-brand { text-align: center; position: relative; z-index: 1; }
+.login-shield {
+  width: 70px; height: 70px;
+  background: var(--red);
+  clip-path: polygon(50% 0%, 100% 15%, 100% 60%, 50% 100%, 0% 60%, 0% 15%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-weight: 800; font-size: 22px;
+  color: white;
+  margin: 0 auto 20px;
+}
+.login-brand h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: 26px; font-weight: 800;
+  color: white; letter-spacing: 0.5px;
+}
+.login-brand p { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+.login-tagline {
+  margin-top: 48px;
+  position: relative; z-index: 1;
+  text-align: center;
+}
+.login-tagline h2 { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700; color: white; }
+.login-tagline p  { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 8px; line-height: 1.6; }
+
+.login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: white;
+}
+
+.login-form-box { width: 100%; max-width: 400px; }
+.login-form-box h2 { font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 700; color: var(--text); }
+.login-form-box p  { color: var(--subtext); font-size: 13px; margin-top: 4px; margin-bottom: 28px; }
+
+.login-hint {
+  margin-top: 20px;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--subtext);
+  line-height: 1.8;
+}
+.login-hint strong { color: var(--text); }
+
+/* ── Responsive ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .main    { margin-left: 0; }
+  .login-left { display: none; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* ── Grade input form ─────────────────────────────────────── */
+.grade-form { display: flex; align-items: center; gap: 8px; }
+.grade-form input[type=number] {
+  width: 80px; padding: 5px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px; font-size: 13px;
+}
+.grade-form input:focus { outline: none; border-color: var(--teal); }
+
+/* ── Empty state ──────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--subtext);
+}
+.empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
+.empty-state h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.empty-state p  { font-size: 13px; }

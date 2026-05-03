@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}My Grades — Student{% endblock %}
+{% block page_title %}My Grades{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>My Grades</h1>
+    <p>Your academic performance across all courses</p>
+  </div>
+</div>
+
+<!-- GPA Card -->
+{% if gpa is not none %}
+<div style="display:grid; grid-template-columns: 200px 1fr; gap:18px; margin-bottom:24px;">
+  <div class="stat-card" style="--accent: var(--teal); text-align:center;">
+    <div class="gpa-display">
+      <div class="gpa-number">{{ gpa }}</div>
+      <div class="gpa-label">Cumulative GPA</div>
+    </div>
+  </div>
+  <div class="stat-card" style="--accent: var(--red);">
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; height:100%; align-items:center;">
+      {% set graded = enrollments | selectattr('grade', '!=', none) | list %}
+      {% set total_credits = graded | sum(attribute='credits') %}
+      <div style="text-align:center;">
+        <div style="font-family:'Sora',sans-serif; font-size:28px; font-weight:700; color:var(--text);">
+          {{ enrollments | length }}
+        </div>
+        <div style="font-size:12px; color:var(--subtext); margin-top:4px;">Total Courses</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'Sora',sans-serif; font-size:28px; font-weight:700; color:var(--text);">
+          {{ graded | length }}
+        </div>
+        <div style="font-size:12px; color:var(--subtext); margin-top:4px;">Graded</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'Sora',sans-serif; font-size:28px; font-weight:700; color:var(--text);">
+          {{ total_credits }}
+        </div>
+        <div style="font-size:12px; color:var(--subtext); margin-top:4px;">Credit Hours</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>Grade Report</h3>
+    <span style="font-size:12px; color:var(--subtext);">Scale: 4.0 = A, 3.0 = B, 2.0 = C, 1.0 = D, 0.0 = F</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Instructor</th>
+        <th>Department</th>
+        <th>Credits</th>
+        <th>Semester</th>
+        <th>Grade</th>
+        <th>Letter</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in enrollments %}
+      <tr>
+        <td><strong>{{ e['course_name'] }}</strong></td>
+        <td>{{ e['instructor_name'] or '—' }}</td>
+        <td>{{ e['department'] or '—' }}</td>
+        <td><span class="badge badge-teal">{{ e['credits'] }} CR</span></td>
+        <td>{{ e['semester'] }}</td>
+        <td>
+          {% if e['grade'] is not none %}
+            {% set g = e['grade'] %}
+            <span class="grade-pill {{ 'grade-A' if g >= 3.5 else 'grade-B' if g >= 3.0 else 'grade-C' if g >= 2.0 else 'grade-D' if g >= 1.0 else 'grade-F' }}">
+              {{ "%.1f" | format(g) }}
+            </span>
+          {% else %}
+            <span class="grade-pill grade-pending">—</span>
+          {% endif %}
+        </td>
+        <td style="font-weight:700; color:var(--text);">
+          {% if e['grade'] is not none %}
+            {% set g = e['grade'] %}
+            {{ 'A' if g >= 3.5 else 'B' if g >= 3.0 else 'C' if g >= 2.0 else 'D' if g >= 1.0 else 'F' }}
+          {% else %}
+            <span style="color:var(--subtext);">—</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if e['grade'] is not none %}
+            <span class="badge badge-green">Completed</span>
+          {% else %}
+            <span class="badge badge-yellow">In Progress</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="8">
+          <div class="empty-state">
+            <div class="empty-icon">📊</div>
+            <h3>No grades yet</h3>
+            <p>Enroll in courses and your grades will appear here once evaluated.</p>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

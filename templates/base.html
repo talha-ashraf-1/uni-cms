@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}University CMS{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="layout">
+
+  <!-- ── Sidebar ────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-shield">UC</div>
+      <div class="logo-text">
+        <strong>UNIVERSITY CMS</strong>
+        <span>Course Management</span>
+      </div>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">{{ session.name[0] | upper if session.name else '?' }}</div>
+      <div class="user-info">
+        <strong>{{ session.name or session.username }}</strong>
+        <span>{{ session.role }}</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      {% if session.role == 'admin' %}
+        <div class="nav-section-label">Main</div>
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
+          <span class="icon">⌂</span> Dashboard
+        </a>
+        <div class="nav-section-label">Management</div>
+        <a href="{{ url_for('admin_users') }}"
+           class="nav-item {% if 'users' in request.endpoint %}active{% endif %}">
+          <span class="icon">👤</span> Users
+        </a>
+        <a href="{{ url_for('admin_courses') }}"
+           class="nav-item {% if 'courses' in request.endpoint %}active{% endif %}">
+          <span class="icon">📚</span> Courses
+        </a>
+        <a href="{{ url_for('admin_students') }}"
+           class="nav-item {% if 'students' in request.endpoint %}active{% endif %}">
+          <span class="icon">🎓</span> Students
+        </a>
+        <a href="{{ url_for('admin_enrollments') }}"
+           class="nav-item {% if 'enrollments' in request.endpoint %}active{% endif %}">
+          <span class="icon">📋</span> Enrollments
+        </a>
+
+      {% elif session.role == 'instructor' %}
+        <div class="nav-section-label">Main</div>
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
+          <span class="icon">⌂</span> Dashboard
+        </a>
+        <div class="nav-section-label">Teaching</div>
+        <a href="{{ url_for('instructor_courses') }}"
+           class="nav-item {% if 'courses' in request.endpoint %}active{% endif %}">
+          <span class="icon">📚</span> My Courses
+        </a>
+        <a href="{{ url_for('instructor_all_students') }}"
+           class="nav-item {% if request.endpoint == 'instructor_all_students' %}active{% endif %}">
+          <span class="icon">🎓</span> My Students
+        </a>
+
+      {% elif session.role == 'student' %}
+        <div class="nav-section-label">Main</div>
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
+          <span class="icon">⌂</span> Dashboard
+        </a>
+        <div class="nav-section-label">Academics</div>
+        <a href="{{ url_for('student_courses') }}"
+           class="nav-item {% if request.endpoint == 'student_courses' %}active{% endif %}">
+          <span class="icon">📚</span> Browse Courses
+        </a>
+        <a href="{{ url_for('student_grades') }}"
+           class="nav-item {% if request.endpoint == 'student_grades' %}active{% endif %}">
+          <span class="icon">📊</span> My Grades
+        </a>
+        <a href="{{ url_for('student_profile') }}"
+           class="nav-item {% if request.endpoint == 'student_profile' %}active{% endif %}">
+          <span class="icon">👤</span> My Profile
+        </a>
+      {% endif %}
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="{{ url_for('logout') }}" class="nav-item" style="color:rgba(255,255,255,0.5);">
+        <span class="icon">⏻</span> Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── Main ───────────────────────────────────────────── -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">{% block page_title %}Dashboard{% endblock %}</div>
+      <div class="topbar-right">
+        <span class="badge-role {{ session.role }}">{{ session.role }}</span>
+        <span style="font-size:13px; color:var(--subtext);">{{ session.name or session.username }}</span>
+      </div>
+    </header>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+              {{ '✓' if category == 'success' else '✗' }} {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="page-body">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

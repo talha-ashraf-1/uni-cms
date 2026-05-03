@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Enrollments — Admin{% endblock %}
+{% block page_title %}Enrollments{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>All Enrollments</h1>
+    <p>View every student-course enrollment in the system</p>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>{{ enrollments | length }} Enrollments</h3>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Student</th>
+        <th>Course</th>
+        <th>Instructor</th>
+        <th>Semester</th>
+        <th>Grade</th>
+        <th>Status</th>
+        <th>Enrolled On</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in enrollments %}
+      <tr>
+        <td style="color:var(--subtext);">#{{ e['enrollment_id'] }}</td>
+        <td><strong>{{ e['student_name'] }}</strong></td>
+        <td>{{ e['course_name'] }}</td>
+        <td>{{ e['instructor_name'] or '—' }}</td>
+        <td>{{ e['semester'] }}</td>
+        <td>
+          {% if e['grade'] is not none %}
+            {% set g = e['grade'] %}
+            <span class="grade-pill {{ 'grade-A' if g >= 3.5 else 'grade-B' if g >= 3.0 else 'grade-C' if g >= 2.0 else 'grade-D' if g >= 1.0 else 'grade-F' }}">
+              {{ g }}
+            </span>
+          {% else %}
+            <span class="grade-pill grade-pending">Not graded</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if e['status'] == 'completed' %}
+            <span class="badge badge-green">Completed</span>
+          {% elif e['status'] == 'dropped' %}
+            <span class="badge badge-gray">Dropped</span>
+          {% else %}
+            <span class="badge badge-yellow">Enrolled</span>
+          {% endif %}
+        </td>
+        <td style="font-size:12px; color:var(--subtext);">
+          {{ e['enrolled_at'][:10] if e['enrolled_at'] else '—' }}
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="8">
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <h3>No enrollments yet</h3>
+            <p>Students can enroll through their dashboard.</p>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

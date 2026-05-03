@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}{{ course['course_name'] }} — Students{% endblock %}
+{% block page_title %}Course Students{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>{{ course['course_name'] }}</h1>
+    <p>{{ course['department'] or '' }} &nbsp;•&nbsp; {{ course['credits'] }} Credit Hours &nbsp;•&nbsp; {{ students | length }} students enrolled</p>
+  </div>
+  <a href="{{ url_for('instructor_courses') }}" class="btn btn-outline">← Back to Courses</a>
+</div>
+
+<!-- Stats row -->
+<div class="cards-grid" style="margin-bottom:24px;">
+  {% set graded = students | selectattr('grade', '!=', none) | list %}
+  {% set pending = students | selectattr('grade', '==', none) | list %}
+  <div class="stat-card" style="--accent: var(--teal);">
+    <div class="stat-icon">🎓</div>
+    <div class="stat-label">Total Students</div>
+    <div class="stat-value">{{ students | length }}</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--success);">
+    <div class="stat-icon">✓</div>
+    <div class="stat-label">Graded</div>
+    <div class="stat-value">{{ graded | length }}</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--warning);">
+    <div class="stat-icon">⏳</div>
+    <div class="stat-label">Pending</div>
+    <div class="stat-value">{{ pending | length }}</div>
+  </div>
+  {% if graded %}
+  <div class="stat-card" style="--accent: var(--red);">
+    <div class="stat-icon">📊</div>
+    <div class="stat-label">Class Avg Grade</div>
+    <div class="stat-value" style="font-size:28px;">
+      {{ "%.2f" | format(graded | sum(attribute='grade') / graded | length) }}
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>Student Grades</h3>
+    <span style="font-size:12px; color:var(--subtext);">Grade scale: 0.0 – 4.0</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Semester</th>
+        <th>Current Grade</th>
+        <th>Assign / Update Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in students %}
+      <tr>
+        <td><strong>{{ s['name'] }}</strong></td>
+        <td>{{ s['email'] }}</td>
+        <td>{{ s['department'] or '—' }}</td>
+        <td>{{ s['semester'] }}</td>
+        <td>
+          {% if s['grade'] is not none %}
+            {% set g = s['grade'] %}
+            <span class="grade-pill {{ 'grade-A' if g >= 3.5 else 'grade-B' if g >= 3.0 else 'grade-C' if g >= 2.0 else 'grade-D' if g >= 1.0 else 'grade-F' }}">
+              {{ g }}
+            </span>
+          {% else %}
+            <span class="grade-pill grade-pending">Not graded</span>
+          {% endif %}
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('instructor_grade') }}" class="grade-form">
+            <input type="hidden" name="enrollment_id" value="{{ s['enrollment_id'] }}">
+            <input type="number" name="grade" step="0.1" min="0" max="4.0"
+                   placeholder="0.0–4.0"
+                   value="{{ s['grade'] if s['grade'] is not none else '' }}">
+            <button type="submit" class="btn btn-teal btn-sm">Save</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6">
+          <div class="empty-state">
+            <div class="empty-icon">🎓</div>
+            <h3>No students enrolled yet</h3>
+            <p>Students can enroll through their dashboard.</p>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

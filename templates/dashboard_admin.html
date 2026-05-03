@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard — University CMS{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="welcome-banner">
+  <h2>Welcome back, Administrator! 👋</h2>
+  <p>Here's an overview of the university system.</p>
+</div>
+
+<!-- Stats -->
+<div class="cards-grid">
+  <div class="stat-card" style="--accent: var(--red);">
+    <div class="stat-icon">🎓</div>
+    <div class="stat-label">Total Students</div>
+    <div class="stat-value">{{ stats.students }}</div>
+    <div class="stat-sub">Registered students</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--teal);">
+    <div class="stat-icon">👨‍🏫</div>
+    <div class="stat-label">Instructors</div>
+    <div class="stat-value">{{ stats.instructors }}</div>
+    <div class="stat-sub">Teaching staff</div>
+  </div>
+  <div class="stat-card" style="--accent: #7C3AED;">
+    <div class="stat-icon">📚</div>
+    <div class="stat-label">Courses</div>
+    <div class="stat-value">{{ stats.courses }}</div>
+    <div class="stat-sub">Active courses</div>
+  </div>
+  <div class="stat-card" style="--accent: var(--success);">
+    <div class="stat-icon">📋</div>
+    <div class="stat-label">Enrollments</div>
+    <div class="stat-value">{{ stats.enrollments }}</div>
+    <div class="stat-sub">Total enrollments</div>
+  </div>
+</div>
+
+<!-- Quick actions -->
+<div class="page-header">
+  <div>
+    <h1>Quick Actions</h1>
+    <p>Common administrative tasks</p>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:14px; margin-bottom:28px;">
+  <a href="{{ url_for('admin_add_user') }}" class="btn btn-red" style="justify-content:center; padding:14px;">
+    + Add User
+  </a>
+  <a href="{{ url_for('admin_add_course') }}" class="btn btn-teal" style="justify-content:center; padding:14px;">
+    + Add Course
+  </a>
+  <a href="{{ url_for('admin_students') }}" class="btn btn-outline" style="justify-content:center; padding:14px;">
+    View Students
+  </a>
+  <a href="{{ url_for('admin_enrollments') }}" class="btn btn-outline" style="justify-content:center; padding:14px;">
+    View Enrollments
+  </a>
+</div>
+
+<!-- Recent users -->
+<div class="table-card">
+  <div class="table-card-header">
+    <h3>Recent Users</h3>
+    <a href="{{ url_for('admin_users') }}" class="btn btn-outline btn-sm">View All</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in recent_users %}
+      <tr>
+        <td><strong>{{ u['username'] }}</strong></td>
+        <td>{{ u['email'] }}</td>
+        <td><span class="badge badge-{{ u['role'] }}">{{ u['role'] }}</span></td>
+        <td style="color:var(--subtext); font-size:12px;">{{ u['created_at'][:10] if u['created_at'] else '—' }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" style="text-align:center; color:var(--subtext); padding:24px;">No users found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
